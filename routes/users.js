@@ -8,7 +8,7 @@ const {
 } = require('../controllers/users');
 
 // User model
-const User = require('../model/User');
+const User = require('../models/User');
 
 // Merging routers
 const router = express.Router({mergeParams: true});
@@ -32,3 +32,5 @@ router.route('/:id')
 .get(getUser)
 .put(updateUser)
 .delete(deleteUser)
+
+module.exports = router;
