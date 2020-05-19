@@ -1,7 +1,8 @@
 const express = require('express');
 const {
   getReviews,
-  getReview
+  getReview,
+  addReview
 } = require('../controllers/reviews');
 
 // Review model
@@ -18,9 +19,10 @@ const { protect, authorize } = require('../middleware/auth');
 
 // Routes
 router.route('/')
-.get(advancedResults(Review, {path: 'bootcamp', select: 'name description'}), getReviews);
+.get(advancedResults(Review, {path: 'bootcamp', select: 'name description'}), getReviews)
+.post(protect, authorize('user', 'admin'), addReview);
 
 router.route('/:id')
 .get(getReview);
 
-module.exports = router
+module.exports = router;

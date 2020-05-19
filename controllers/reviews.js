@@ -10,7 +10,7 @@ const Bootcamp = require('../models/Bootcamp');
 exports.getReviews = asyncHandler(async (req, res, next) => {
   
   if(req.params.bootcampId){
-    const reviews = await Review.find({Bootcamp: req.params.bootcampId});
+    const reviews = await Review.find({bootcamp: req.params.bootcampId});
 
     return res.status(200).json({
       success: true,
@@ -39,6 +39,28 @@ exports.getReview = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
+    success: true,
+    data: review
+  });
+});
+
+// @desc      Add review
+// @route     POST /api/v1/bootcamps/:bootcampId/reviews/
+// @access    Private
+exports.addReview = asyncHandler(async (req, res, next) => {
+  
+  req.body.bootcamp= req.params.bootcampId;
+  req.body.user = req.user._id;
+
+  const bootcamp = await Bootcamp.findById(req.params.bootcampId);
+
+  if(!bootcamp){
+    return next(new ErrorResponse(`No bootcamp with the id of ${req.params.bootcampId}`, 404));
+  }
+
+  const review = await Review.create(req.body);
+
+  res.status(201).json({
     success: true,
     data: review
   });
