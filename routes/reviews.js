@@ -2,7 +2,7 @@ const express = require('express');
 const {
   getReviews,
   getReview,
-  addReview
+  addReview, updateReview
 } = require('../controllers/reviews');
 
 // Review model
@@ -23,6 +23,7 @@ router.route('/')
 .post(protect, authorize('user', 'admin'), addReview);
 
 router.route('/:id')
-.get(getReview);
+.get(getReview)
+.put(protect, authorize('user', 'admin'), updateReview);
 
 module.exports = router;
